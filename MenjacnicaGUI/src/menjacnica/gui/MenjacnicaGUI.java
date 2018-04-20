@@ -151,6 +151,12 @@ public class MenjacnicaGUI extends JFrame {
 		panel.add(ObrisiKurs);
 		
 		JButton IzvrsiZamenu = new JButton("Izvrsi zamenu");
+		IzvrsiZamenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				IzvrsiZamenuGUI iz = new IzvrsiZamenuGUI(menjacnica);
+				iz.setVisible(true);
+			}
+		});
 		IzvrsiZamenu.setPreferredSize(new Dimension(120, 23));
 		panel.add(IzvrsiZamenu);
 		
