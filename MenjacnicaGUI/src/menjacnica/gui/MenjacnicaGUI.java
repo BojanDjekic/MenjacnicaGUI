@@ -39,8 +39,8 @@ public class MenjacnicaGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
-	private JTextArea aStatus;
-
+	public JTextArea aStatus;
+	private MenjacnicaGUI menjacnica;
 	/**
 	 * Launch the application.
 	 */
@@ -84,7 +84,7 @@ public class MenjacnicaGUI extends JFrame {
 		mntmOpen.setIcon(new ImageIcon(MenjacnicaGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/TreeOpen.gif")));
 		mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mnFile.add(mntmOpen);
-		
+		this.menjacnica = this;
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -131,6 +131,12 @@ public class MenjacnicaGUI extends JFrame {
 		contentPane.add(panel, BorderLayout.EAST);
 		
 		JButton DodajKurs = new JButton("Dodaj kurs");
+		DodajKurs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DodajKursGUI dk = new DodajKursGUI(menjacnica);
+				dk.setVisible(true);
+			}
+		});
 		DodajKurs.setPreferredSize(new Dimension(120, 23));
 		panel.add(DodajKurs);
 		
@@ -170,6 +176,12 @@ public class MenjacnicaGUI extends JFrame {
 		addPopup(table, popupMenu);
 		
 		JMenuItem mntmDodajKurs = new JMenuItem("Dodaj kurs");
+		mntmDodajKurs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DodajKursGUI dk = new DodajKursGUI(menjacnica);
+				dk.setVisible(true);
+			}
+		});
 		popupMenu.add(mntmDodajKurs);
 		
 		JMenuItem mntmObrsiKurs = new JMenuItem("Obrsi kurs\r\n");
