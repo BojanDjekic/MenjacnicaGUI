@@ -10,11 +10,14 @@ import java.awt.Toolkit;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.Dimension;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -22,16 +25,21 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MenjacnicaGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private JTextArea aStatus;
 
 	/**
 	 * Launch the application.
@@ -65,16 +73,40 @@ public class MenjacnicaGUI extends JFrame {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser f = new JFileChooser();
+				f.showOpenDialog(f);
+				File file = f.getSelectedFile();
+				aStatus.setText(aStatus.getText() + "Ucitan fajl: " + file + "\n");
+			}
+		});
 		mntmOpen.setIcon(new ImageIcon(MenjacnicaGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/TreeOpen.gif")));
 		mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mnFile.add(mntmOpen);
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser f = new JFileChooser();
+				f.showSaveDialog(f);
+				aStatus.setText(aStatus.getText() + "Sacuvan fajl: " +f+ "\n");
+		}
+		});
 		mntmSave.setIcon(new ImageIcon(MenjacnicaGUI.class.getResource("/com/sun/java/swing/plaf/windows/icons/FloppyDrive.gif")));
 		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mnFile.add(mntmSave);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane j = new JOptionPane();
+				int opcija = j.showConfirmDialog(j,"Da li ste sigurni da zelite da izadjete?", "Izlaz",j.YES_NO_CANCEL_OPTION);
+				if (opcija == j.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
 		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.ALT_MASK));
 		mnFile.add(mntmExit);
 		
@@ -82,6 +114,12 @@ public class MenjacnicaGUI extends JFrame {
 		menuBar.add(mnHelp);
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
+		mntmAbout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane j = new JOptionPane();
+				JOptionPane.showMessageDialog(j, "Autor: Bojan Djekic \nFakultet: FON \nBroj indeksa: 73/16", "Podaci o autoru",j.INFORMATION_MESSAGE);
+			}
+		});
 		mnHelp.add(mntmAbout);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -144,10 +182,10 @@ public class MenjacnicaGUI extends JFrame {
 		scrollPane_1.setBorder(new TitledBorder(null, "STATUS", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPane.add(scrollPane_1, BorderLayout.SOUTH);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setRows(3);
-		textArea.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		scrollPane_1.setViewportView(textArea);
+		aStatus = new JTextArea();
+		aStatus.setRows(3);
+		aStatus.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		scrollPane_1.setViewportView(aStatus);
 	}
 
 	private static void addPopup(Component component, final JPopupMenu popup) {
